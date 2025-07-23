@@ -8,7 +8,7 @@
 
 **MovieBox** is a sleek and modern web application for discovering movies and TV shows, built with the latest front-end technologies. Inspired by the user interfaces of popular streaming platforms, this project delivers a rich, interactive, and fully responsive user experience.
 
-**[ ✨ View Live Demo ✨ ](PASTE_YOUR_LIVE_DEMO_LINK_HERE)**
+**[ ✨ View Live Demo ✨ ](https://movie-box-two-roan.vercel.app/)**
 
 ---
 
@@ -34,7 +34,7 @@ _A beautiful interface for searching movies and TV shows with instant results._
 
 ## 🌟 Key Features
 
-This project implements a collection of modern features:
+This project implements a collection of MODERN features:
 
 - **Cinematic UI:** A dynamic hero section and horizontal carousels for various categories (Now Playing, Top Rated, etc.).
 - **Engaging Visual Effects:**

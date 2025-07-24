@@ -11,6 +11,7 @@ const HomePage = () => {
         {/* Different carousels for different categories */}
         <MovieCarousel title="Now Playing" endpoint="movie/now_playing" />
         <MovieCarousel title="Top Rated Movies" endpoint="movie/top_rated" />
+        <MovieCarousel title="Top Rated TV Shows" endpoint="tv/top_rated" />
         <MovieCarousel title="Upcoming Releases" endpoint="movie/upcoming" />
         <MovieCarousel
           title="Trending This Week"

@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import MovieDetailSkeleton from "../UI/MovieDetailSkeleton";
+import { formatVotes } from "../../utils/formatter";
 
-const MovieDetailPage = () => {
-  const { movieId } = useParams();
-  const [movie, setMovie] = useState(null);
+const DetailPage = () => {
+  const { mediaType, id } = useParams();
+  const [item, setItem] = useState(null);
   const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,13 +18,13 @@ const MovieDetailPage = () => {
       setError(null); // Reset error state on new fetch
       try {
         const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&append_to_response=credits`
+          `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${apiKey}&append_to_response=credits`
         );
         if (!response.ok) {
           throw new Error("Movie not found. Please check the URL.");
         }
         const data = await response.json();
-        setMovie(data);
+        setItem(data);
         setCast(data.credits.cast.slice(0, 12)); // Get top 12 cast members
       } catch (err) {
         console.error("Error fetching movie details:", err);
@@ -35,7 +36,7 @@ const MovieDetailPage = () => {
 
     fetchMovieData();
     window.scrollTo(0, 0);
-  }, [movieId, apiKey]);
+  }, [mediaType, id, apiKey]);
 
   if (loading) {
     return <MovieDetailSkeleton />;
@@ -50,8 +51,20 @@ const MovieDetailPage = () => {
     );
   }
 
-  const backdropUrl = `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`; // Using a more optimized size
-  const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+  if (!item) return null;
+
+  const backdropUrl = `https://image.tmdb.org/t/p/w1280${item.backdrop_path}`;
+  const posterUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+
+  const displayName = item.title || item.name;
+  const releaseDate = item.release_date || item.first_air_date;
+  const tagline = item.tagline;
+
+  const rating = item.vote_average?.toFixed(1);
+  const runtime = item.runtime;
+  const seasons = item.number_of_seasons;
+  const episodes = item.number_of_episodes;
+  const status = item.status;
 
   return (
     <motion.div
@@ -84,7 +97,7 @@ const MovieDetailPage = () => {
           >
             <img
               src={posterUrl}
-              alt={movie.title}
+              alt={displayName}
               className="rounded-xl shadow-2xl w-full"
             />
           </motion.div>
@@ -92,16 +105,14 @@ const MovieDetailPage = () => {
           {/* Details */}
           <div className="mt-6 md:mt-12 text-white mx-4">
             <h1 className="text-3xl lg:text-5xl font-black tracking-tight">
-              {movie.title}
+              {displayName}
             </h1>
-            {movie.tagline && (
-              <p className="text-lg text-gray-400 mt-2 italic">
-                "{movie.tagline}"
-              </p>
+            {tagline && (
+              <p className="text-lg text-gray-400 mt-2 italic">"{tagline}"</p>
             )}
 
             <div className="flex flex-wrap gap-2 mt-5">
-              {movie.genres.map((genre) => (
+              {item.genres.map((genre) => (
                 <span
                   key={genre.id}
                   className="bg-gray-800 text-gray-300 px-3 py-1 text-sm rounded-full"
@@ -112,35 +123,74 @@ const MovieDetailPage = () => {
             </div>
 
             <p className="mt-6 text-gray-300 leading-relaxed max-w-3xl">
-              {movie.overview}
+              {item.overview}
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 mt-8 text-left sm:text-center">
               <div>
                 <p className="text-gray-400 text-sm font-medium">RATING</p>
                 <p className="text-xl sm:text-2xl font-bold text-yellow-400 flex items-center gap-2 justify-start sm:justify-center">
-                  ⭐ {movie.vote_average.toFixed(1)}{" "}
+                  ⭐ {rating}
                   <span className="text-gray-500 text-sm">/ 10</span>
                 </p>
+                <span className="text-gray-500 text-sm">
+                  {formatVotes(item.vote_count)} votes
+                </span>
               </div>
-              <div>
-                <p className="text-gray-400 text-sm font-medium">RUNTIME</p>
-                <p className="text-xl sm:text-2xl font-bold">
-                  {movie.runtime} min
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-400 text-sm font-medium">
-                  RELEASE DATE
-                </p>
-                <p className="text-xl sm:text-2xl font-bold">
-                  {new Date(movie.release_date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
-              </div>
+              {mediaType === "movie" && (
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">RUNTIME</p>
+                  <p className="text-xl sm:text-2xl font-bold">{runtime} min</p>
+                </div>
+              )}
+              {mediaType === "tv" && (
+                <>
+                  <div>
+                    <p className="text-gray-400 text-sm font-medium">SEASONS</p>
+                    <p className="text-xl sm:text-2xl font-bold">{seasons}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm font-medium">
+                      EPISODES
+                    </p>
+                    <p className="text-xl sm:text-2xl font-bold">{episodes}</p>
+                  </div>
+                </>
+              )}
+              {mediaType === "movie" && (
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">
+                    RELEASE DATE
+                  </p>
+                  <p className="text-xl sm:text-2xl font-bold">
+                    {new Date(releaseDate).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                </div>
+              )}
+              {mediaType === "tv" && (
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">
+                    FIRST AIR DATE
+                  </p>
+                  <p className="text-xl sm:text-2xl font-bold">
+                    {new Date(releaseDate).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                </div>
+              )}
+              {mediaType === "tv" && (
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">Status</p>
+                  <p className="text-xl sm:text-2xl font-bold">{status}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -178,4 +228,4 @@ const MovieDetailPage = () => {
   );
 };
 
-export default MovieDetailPage;
+export default DetailPage;

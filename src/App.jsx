@@ -14,8 +14,7 @@ const App = () => {
 
   return (
     <div className="bg-[#0c0c0c]">
-      {/* <Navbar onSearchClick={() => setIsSearchOpen(true)} /> */}
-      <Navbar />
+      <Navbar onSearchClick={() => setIsSearchOpen(true)} />
 
       <SearchOverlay
         isOpen={isSearchOpen}

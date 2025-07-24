@@ -2,28 +2,28 @@ import { useEffect, useState } from "react";
 import MovieCard from "../UI/MovieCard";
 import { motion } from "framer-motion";
 
-const TvShowsPage = () => {
-  const [tvShows, setTvShows] = useState([]);
+const ContentGridPage = ({ title, endpoint }) => {
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
   useEffect(() => {
-    const fetchTvShows = async () => {
+    const fetchMovies = async () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&language=en-US&page=1`
+          `https://api.themoviedb.org/3/${endpoint}?api_key=${apiKey}&language=en-US&page=1`
         );
         const data = await response.json();
-        setTvShows(data.results);
+        setItems(data.results);
       } catch (error) {
-        console.error("Error fetching TV shows:", error);
+        console.error("Error fetching movies:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchTvShows();
-  }, [apiKey]);
+    fetchMovies();
+  }, [apiKey, endpoint]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -43,8 +43,9 @@ const TvShowsPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        Popular TV Shows
+        {title}
       </motion.h1>
+
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -56,8 +57,8 @@ const TvShowsPage = () => {
           initial="hidden"
           animate="visible"
         >
-          {tvShows.map((show) => (
-            <MovieCard key={show.id} movie={show} />
+          {items.map((item) => (
+            <MovieCard key={item.id} movie={item} />
           ))}
         </motion.div>
       )}
@@ -65,4 +66,4 @@ const TvShowsPage = () => {
   );
 };
 
-export default TvShowsPage;
+export default ContentGridPage;

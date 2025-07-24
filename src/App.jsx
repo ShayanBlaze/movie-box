@@ -3,13 +3,11 @@ import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Navbar from "./components/UI/Navbar";
-import SearchOverlay from "./components/UI/SearchOverlay";
-import HomePage from "./components/pages/HomePage";
-import MoviesPage from "./components/pages/MoviesPage";
-import TvShowsPage from "./components/pages/TvShowsPage";
-import MovieDetailPage from "./components/pages/MovieDetailPage";
-import TvShowDetailPage from "./components/pages/TvShowDetailPage";
+import Navbar from "../components/UI/Navbar";
+import SearchOverlay from "../components/UI/SearchOverlay";
+import HomePage from "../components/pages/HomePage";
+import ContentGridPage from "../components/pages/ContentGridPage";
+import DetailPage from "../components/pages/DetailPage";
 
 const App = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -28,10 +26,19 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/movies" element={<MoviesPage />} />
-        <Route path="/tv-shows" element={<TvShowsPage />} />
-        <Route path="/movie/:movieId" element={<MovieDetailPage />} />
-        <Route path="/tv/:tvId" element={<TvShowDetailPage />} />
+        <Route
+          path="/movies"
+          element={
+            <ContentGridPage title="Popular Movies" endpoint="movie/popular" />
+          }
+        />
+        <Route
+          path="/tv-shows"
+          element={
+            <ContentGridPage title="Popular TV Shows" endpoint="tv/popular" />
+          }
+        />
+        <Route path="/:mediaType/:id" element={<DetailPage />} />
       </Routes>
     </div>
   );

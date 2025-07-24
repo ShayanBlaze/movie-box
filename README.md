@@ -16,13 +16,13 @@
 
 **Immersive Home Page with a Dynamic Hero Section**
 ![MovieBox Home Page](https://i.imgur.com/FJiLgpK.jpeg)
-_Users are greeted with a cinematic hero section and categorized carousels._
+_Users are greeted with a cinematic hero section and categorized carousels for movies and TV shows._
 
 <br>
 
-**Detailed View with Comprehensive Information**
+**Highly Scalable Detail Page**
 ![MovieBox Detail Page](https://i.imgur.com/CID6NrI.png)
-_Detail pages provide complete information, including cast, ratings, and trailers._
+_A single, reusable detail page provides complete information for any media type, including cast, ratings, and more._
 
 <br>
 
@@ -34,22 +34,24 @@ _A beautiful interface for searching movies and TV shows with instant results._
 
 ## 🌟 Key Features
 
-This project implements a collection of MODERN features:
+This project implements a collection of MODERN features and follows best practices for scalability and maintainability.
 
-- **Cinematic UI:** A dynamic hero section and horizontal carousels for various categories (Now Playing, Top Rated, etc.).
+- **Clean & Scalable Architecture:**
+  - **Reusable Components:** Following the **DRY (Don't Repeat Yourself)** principle, the app uses generic components like `ContentGridPage` and `DetailPage` to render different types of content, making the codebase clean and easy to extend.
+  - **Utility Modules:** Helper functions (e.g., number formatters) are separated into a `utils` directory for better organization.
 - **Engaging Visual Effects:**
-  - **3D Tilt Effect** on cards when hovered.
+  - **3D Tilt Effect** on cards when hovered, created using `useRef` for optimal performance.
   - Smooth and fluid animations using the **Framer Motion** library.
-  - **Glassmorphism** effect on the navigation bar.
-- **Advanced Routing:** A multi-page structure using `React Router DOM`, including:
-  - Home, Movies, and TV Shows pages.
-  - Dynamic detail pages for each movie and TV show (`/movie/:id` & `/tv/:id`).
+  - **Glassmorphism** effect on the navigation bar that appears on scroll.
+- **Advanced & Scalable Routing:**
+  - A highly scalable routing structure using a single dynamic route (`/:mediaType/:id`) to handle detail pages for any content type (movies, TV shows, etc.).
 - **Powerful Search:**
   - A full-screen search overlay.
   - Instant results using a custom `useDebounce` hook to optimize API requests.
 - **Performance Optimization:**
   - **Lazy Loading** for cast images to increase initial page load speed.
   - **Skeleton Loaders** to improve the user experience while data is being fetched.
+- **Enhanced UI Details:** Displays formatted vote counts (e.g., '1.2k', '1.5M') for better readability.
 - **Fully Responsive Design:** A flawless viewing experience on all devices, from mobile phones to desktops.
 
 ---
@@ -69,7 +71,7 @@ A list of the main technologies and libraries used in this project:
 
 ## 📂 Project Structure
 
-The file and folder structure is designed to be readable, manageable, and scalable.
+The project structure has been refactored for scalability and readability, following best practices.
 
 ```
 movie-box/
@@ -77,22 +79,20 @@ movie-box/
 ├── src/
 │   ├── components/
 │   │   ├── pages/
-│   │   │   ├── HomePage.jsx
-│   │   │   ├── MovieDetailPage.jsx
-│   │   │   ├── MoviesPage.jsx
-│   │   │   ├── TvShowDetailPage.jsx
-│   │   │   └── TvShowsPage.jsx
+│   │   │   ├── ContentGridPage.jsx
+│   │   │   ├── DetailPage.jsx
+│   │   │   └── HomePage.jsx
 │   │   └── UI/
 │   │       ├── Hero.jsx
 │   │       ├── MovieCard.jsx
 │   │       ├── MovieCarousel.jsx
 │   │       ├── MovieDetailSkeleton.jsx
 │   │       ├── Navbar.jsx
-│   │       ├── SearchBar.jsx
-│   │       ├── SearchOverlay.jsx
-│   │       └── SkeletonCard.jsx
+│   │       └── SearchOverlay.jsx
 │   ├── hooks/
 │   │   └── useDebounce.js
+│   ├── utils/
+│   │   └── formatter.js
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── styles.css

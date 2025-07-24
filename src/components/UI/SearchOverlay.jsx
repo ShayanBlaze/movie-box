@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDebounce } from "../../hooks/useDebounce";
-import { Link } from "react-router-dom"; // <-- وارد کردن Link
+import { Link } from "react-router-dom";
 
 const SearchOverlay = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState("");
@@ -15,12 +15,12 @@ const SearchOverlay = ({ isOpen, onClose }) => {
       setLoading(true);
       const searchMulti = async () => {
         try {
-          // **استفاده از جستجوی چندگانه برای یافتن فیلم و سریال**
+          // Multiple search request
           const response = await fetch(
             `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${debouncedQuery}`
           );
           const data = await response.json();
-          // فیلتر کردن نتایجی که فیلم یا سریال نیستند (مثلا بازیگران)
+          // Filter out results that are not movies or TV shows (e.g., actors)
           setResults(
             data.results.filter(
               (item) => item.media_type === "movie" || item.media_type === "tv"
@@ -63,7 +63,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
             className="w-full max-w-2xl mt-12"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* ... (بخش input بدون تغییر) ... */}
+            {/* Input Section */}
             <div className="relative">
               <input
                 type="text"
@@ -94,7 +94,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
               </button>
             </div>
 
-            {/* **بخش نتایج جستجو (اصلاح شده)** */}
+            {/* Results Section */}
             <div className="mt-6 max-h-[60vh] overflow-y-auto space-y-3">
               {loading && (
                 <p className="text-center text-gray-400">Searching...</p>
@@ -108,7 +108,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                 const displayDate = item.release_date || item.first_air_date;
 
                 return (
-                  // **هر نتیجه یک لینک است که با کلیک، صفحه جستجو را می‌بندد**
+                  // Each result is a link that closes the search overlay on click
                   <Link key={item.id} to={linkPath} onClick={onClose}>
                     <div className="bg-gray-800/70 rounded-lg p-3 flex items-center gap-4 hover:bg-gray-700 transition-colors">
                       <img

@@ -16,7 +16,6 @@ const TvShowDetailPage = () => {
       setLoading(true);
       setError(null);
       try {
-        // **درخواست API بهینه شده برای دریافت اطلاعات بازیگران**
         const response = await fetch(
           `https://api.themoviedb.org/3/tv/${tvId}?api_key=${apiKey}&language=en-US&append_to_response=credits`
         );
@@ -24,7 +23,7 @@ const TvShowDetailPage = () => {
 
         const data = await response.json();
         setShow(data);
-        setCast(data.credits.cast.slice(0, 12)); // دریافت ۱۲ بازیگر اصلی
+        setCast(data.credits.cast.slice(0, 12));
       } catch (err) {
         setError(err.message);
       } finally {
@@ -109,7 +108,7 @@ const TvShowDetailPage = () => {
               {show.overview}
             </p>
 
-            {/* **بخش اطلاعات بهبودیافته** */}
+            {/* More Information */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 mt-8 text-left sm:text-center">
               <div>
                 <p className="text-gray-400 text-sm font-medium">RATING</p>
@@ -136,7 +135,7 @@ const TvShowDetailPage = () => {
           </div>
         </div>
 
-        {/* **بخش بازیگران (جدید)** */}
+        {/* Cast Section */}
         {cast.length > 0 && (
           <div className="mt-16 sm:mt-20">
             <h2 className="text-3xl font-bold text-white mb-6 border-l-4 border-yellow-400 pl-4">

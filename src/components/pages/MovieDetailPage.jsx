@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import MovieDetailSkeleton from "../UI/MovieDetailSkeleton"; // <-- وارد کردن اسکلتون
+import MovieDetailSkeleton from "../UI/MovieDetailSkeleton";
 
 const MovieDetailPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // <-- state برای مدیریت خطا
+  const [error, setError] = useState(null);
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
   useEffect(() => {
@@ -162,7 +162,7 @@ const MovieDetailPage = () => {
                     }
                     alt={actor.name}
                     className="rounded-lg shadow-lg mx-auto transition-transform duration-300 hover:scale-105"
-                    loading="lazy" // <-- بهینه سازی کلیدی
+                    loading="lazy"
                   />
                   <p className="text-white font-semibold mt-3 text-sm">
                     {actor.name}

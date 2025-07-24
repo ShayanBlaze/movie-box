@@ -23,7 +23,7 @@ const App = () => {
         onClose={() => setIsSearchOpen(false)}
       />
 
-      {/* 2. Add ToastContainer here */}
+      {/* Toast Container */}
       <ToastContainer />
 
       <Routes>

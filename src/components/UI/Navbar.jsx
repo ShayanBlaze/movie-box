@@ -69,7 +69,7 @@ const Navbar = ({ onSearchClick }) => {
           <div className="flex items-center">
             <button
               onClick={onSearchClick}
-              className="text-gray-300 hover:text-yellow-400 p-2 rounded-full"
+              className="text-gray-300 hover:text-yellow-400 p-2 rounded-full cursor-pointer"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

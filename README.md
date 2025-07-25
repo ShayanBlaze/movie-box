@@ -1,12 +1,13 @@
-# MovieBox 🎬 - A Modern Movie Discovery App
+# MovieBox 🎬 - A Modern & Type-Safe Movie Discovery App
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Framer Motion](https://img.shields.io/badge/Framer-black?style=for-the-badge&logo=framer&logoColor=blue)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)
 
-**MovieBox** is a sleek and modern web application for discovering movies and TV shows, built with the latest front-end technologies. Inspired by the user interfaces of popular streaming platforms, this project delivers a rich, interactive, and fully responsive user experience.
+**MovieBox** is a sleek and modern web application for discovering movies and TV shows, built with the latest front-end technologies. Inspired by the user interfaces of popular streaming platforms, this project delivers a rich, interactive, and fully responsive user experience, now with the added robustness of **TypeScript**.
 
 **[ ✨ View Live Demo ✨ ](https://movie-box-two-roan.vercel.app/)**
 
@@ -36,15 +37,18 @@ _A beautiful interface for searching movies and TV shows with instant results._
 
 This project implements a collection of MODERN features and follows best practices for scalability and maintainability.
 
+- **Type-Safe & Maintainable Codebase:**
+  - Fully migrated to **TypeScript**, ensuring a robust, error-free, and highly maintainable codebase.
+  - Centralized type definitions for API models, providing a single source of truth across the application.
 - **Clean & Scalable Architecture:**
-  - **Reusable Components:** Following the **DRY (Don't Repeat Yourself)** principle, the app uses generic components like `ContentGridPage` and `DetailPage` to render different types of content, making the codebase clean and easy to extend.
-  - **Utility Modules:** Helper functions (e.g., number formatters) are separated into a `utils` directory for better organization.
+  - **Reusable Components:** Following the **DRY (Don't Repeat Yourself)** principle, the app uses generic components like `ContentGridPage` and `DetailPage` to render different types of content.
+  - **Utility & Hooks Modules:** Helper functions and custom hooks are separated into dedicated directories for better organization.
 - **Engaging Visual Effects:**
   - **3D Tilt Effect** on cards when hovered, created using `useRef` for optimal performance.
   - Smooth and fluid animations using the **Framer Motion** library.
   - **Glassmorphism** effect on the navigation bar that appears on scroll.
 - **Advanced & Scalable Routing:**
-  - A highly scalable routing structure using a single dynamic route (`/:mediaType/:id`) to handle detail pages for any content type (movies, TV shows, etc.).
+  - A highly scalable routing structure using a single dynamic route (`/:mediaType/:id`) to handle detail pages for any content type.
 - **Powerful Search:**
   - A full-screen search overlay.
   - Instant results using a custom `useDebounce` hook to optimize API requests.
@@ -61,6 +65,7 @@ This project implements a collection of MODERN features and follows best practic
 A list of the main technologies and libraries used in this project:
 
 - **React.js:** The core library for building the user interface.
+- **TypeScript:** For static type-checking, improved developer experience, and code quality.
 - **Vite:** A modern build tool for fast development.
 - **Tailwind CSS:** A utility-first CSS framework for rapid and professional styling.
 - **React Router DOM:** For managing client-side routing in the application.
@@ -71,7 +76,7 @@ A list of the main technologies and libraries used in this project:
 
 ## 📂 Project Structure
 
-The project structure has been refactored for scalability and readability, following best practices.
+The project structure has been refactored for scalability, readability, and type safety.
 
 ```
 movie-box/
@@ -79,22 +84,26 @@ movie-box/
 ├── src/
 │   ├── components/
 │   │   ├── pages/
-│   │   │   ├── ContentGridPage.jsx
-│   │   │   ├── DetailPage.jsx
-│   │   │   └── HomePage.jsx
+│   │   │   ├── ContentGridPage.tsx
+│   │   │   ├── DetailPage.tsx
+│   │   │   └── HomePage.tsx
 │   │   └── UI/
-│   │       ├── Hero.jsx
-│   │       ├── MovieCard.jsx
-│   │       ├── MovieCarousel.jsx
-│   │       ├── MovieDetailSkeleton.jsx
-│   │       ├── Navbar.jsx
-│   │       └── SearchOverlay.jsx
+│   │       ├── Hero.tsx
+│   │       ├── MovieCard.tsx
+│   │       ├── MovieCarousel.tsx
+│   │       ├── MovieDetailSkeleton.tsx
+│   │       ├── Navbar.tsx
+│   │       ├── SearchBar.tsx
+│   │       ├── SearchOverlay.tsx
+│   │         └── SkeletonCard.tsx
 │   ├── hooks/
-│   │   └── useDebounce.js
+│   │   └── useDebounce.ts
+│   ├── types/
+│   │   └── index.ts
 │   ├── utils/
-│   │   └── formatter.js
-│   ├── App.jsx
-│   ├── main.jsx
+│   │   └── formatter.ts
+│   ├── App.tsx
+│   ├── main.tsx
 │   └── styles.css
 ├── .env
 ├── .gitignore

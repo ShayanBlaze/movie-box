@@ -1,7 +1,13 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
+
+import type { ContentItem } from "../../types";
+
+interface HeroProps {
+  endpoint: string;
+}
 
 const watchTrailerAction = () => {
   toast.info("Sorry, this is a demo version. No trailer available. 🥲", {
@@ -11,13 +17,14 @@ const watchTrailerAction = () => {
   });
 };
 
-const Hero = ({ endpoint }) => {
-  const [featuredMovie, setFeaturedMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
+const Hero: FC<HeroProps> = ({ endpoint }) => {
+  const [featuredMovie, setFeaturedMovie] = useState<ContentItem | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
   useEffect(() => {
     const fetchFeaturedMovie = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           `https://api.themoviedb.org/3/${endpoint}?api_key=${apiKey}&language=en-US&page=1`
@@ -44,11 +51,10 @@ const Hero = ({ endpoint }) => {
     ? `https://image.tmdb.org/t/p/original${featuredMovie.backdrop_path}`
     : "/fallback-image.jpg";
 
-  const movieOverview = featuredMovie.overview
-    ? featuredMovie.overview.length > 200
+  const movieOverview =
+    featuredMovie.overview.length > 200
       ? `${featuredMovie.overview.slice(0, 197)}...`
-      : featuredMovie.overview
-    : "No overview available.";
+      : featuredMovie.overview;
 
   return (
     <div className="relative w-full h-[85vh] sm:h-screen">

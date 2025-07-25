@@ -1,40 +1,50 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import MovieDetailSkeleton from "../UI/MovieDetailSkeleton";
 import { formatVotes } from "../../utils/formatter";
 
-const DetailPage = () => {
-  const { mediaType, id } = useParams();
-  const [item, setItem] = useState(null);
-  const [cast, setCast] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+import type { DetailItem, CastMember, Genre } from "../../types";
+
+type DetailParams = {
+  mediaType: string;
+  id: string;
+};
+
+const DetailPage: FC = () => {
+  const { mediaType, id } = useParams<DetailParams>();
+
+  const [item, setItem] = useState<DetailItem | null>(null);
+  const [cast, setCast] = useState<CastMember[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
   useEffect(() => {
     const fetchMovieData = async () => {
       setLoading(true);
-      setError(null); // Reset error state on new fetch
+      setError(null);
       try {
         const response = await fetch(
           `https://api.themoviedb.org/3/${mediaType}/${id}?api_key=${apiKey}&append_to_response=credits`
         );
         if (!response.ok) {
-          throw new Error("Movie not found. Please check the URL.");
+          throw new Error("Content not found. Please check the URL.");
         }
         const data = await response.json();
         setItem(data);
-        setCast(data.credits.cast.slice(0, 12)); // Get top 12 cast members
-      } catch (err) {
-        console.error("Error fetching movie details:", err);
+        setCast(data.credits.cast.slice(0, 12));
+      } catch (err: any) {
+        console.error("Error fetching details:", err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMovieData();
+    if (mediaType && id) {
+      fetchMovieData();
+    }
     window.scrollTo(0, 0);
   }, [mediaType, id, apiKey]);
 
@@ -85,7 +95,7 @@ const DetailPage = () => {
         </div>
       </div>
 
-      {/* Content Section - Using a wider container on large screens */}
+      {/* Content Section */}
       <div className="relative max-w-6xl mx-auto px-4 sm:px-8 pb-24 -mt-24 sm:-mt-48 lg:-mt-56">
         <div className="md:flex md:items-start md:space-x-10">
           {/* Poster */}
@@ -127,6 +137,7 @@ const DetailPage = () => {
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 mt-8 text-left sm:text-center">
+              {/* RATING */}
               <div>
                 <p className="text-gray-400 text-sm font-medium">RATING</p>
                 <p className="text-xl sm:text-2xl font-bold text-yellow-400 flex items-center gap-2 justify-start sm:justify-center">
@@ -137,13 +148,31 @@ const DetailPage = () => {
                   {formatVotes(item.vote_count)} votes
                 </span>
               </div>
-              {mediaType === "movie" && (
-                <div>
-                  <p className="text-gray-400 text-sm font-medium">RUNTIME</p>
-                  <p className="text-xl sm:text-2xl font-bold">{runtime} min</p>
-                </div>
-              )}
-              {mediaType === "tv" && (
+
+              {/* DYNAMIC INFO BASED ON MEDIA TYPE */}
+              {mediaType === "movie" ? (
+                <>
+                  <div>
+                    <p className="text-gray-400 text-sm font-medium">RUNTIME</p>
+                    <p className="text-xl sm:text-2xl font-bold">
+                      {runtime} min
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm font-medium">
+                      RELEASE DATE
+                    </p>
+                    <p className="text-xl sm:text-2xl font-bold">
+                      {releaseDate &&
+                        new Date(releaseDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                    </p>
+                  </div>
+                </>
+              ) : (
                 <>
                   <div>
                     <p className="text-gray-400 text-sm font-medium">SEASONS</p>
@@ -151,45 +180,22 @@ const DetailPage = () => {
                   </div>
                   <div>
                     <p className="text-gray-400 text-sm font-medium">
-                      EPISODES
+                      FIRST AIR DATE
                     </p>
-                    <p className="text-xl sm:text-2xl font-bold">{episodes}</p>
+                    <p className="text-xl sm:text-2xl font-bold">
+                      {releaseDate &&
+                        new Date(releaseDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm font-medium">Status</p>
+                    <p className="text-xl sm:text-2xl font-bold">{status}</p>
                   </div>
                 </>
-              )}
-              {mediaType === "movie" && (
-                <div>
-                  <p className="text-gray-400 text-sm font-medium">
-                    RELEASE DATE
-                  </p>
-                  <p className="text-xl sm:text-2xl font-bold">
-                    {new Date(releaseDate).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                </div>
-              )}
-              {mediaType === "tv" && (
-                <div>
-                  <p className="text-gray-400 text-sm font-medium">
-                    FIRST AIR DATE
-                  </p>
-                  <p className="text-xl sm:text-2xl font-bold">
-                    {new Date(releaseDate).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                </div>
-              )}
-              {mediaType === "tv" && (
-                <div>
-                  <p className="text-gray-400 text-sm font-medium">Status</p>
-                  <p className="text-xl sm:text-2xl font-bold">{status}</p>
-                </div>
               )}
             </div>
           </div>

@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import MovieCard from "./MovieCard";
 import { motion } from "framer-motion";
 
-const MovieCarousel = ({ title, endpoint }) => {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
+import type { ContentItem } from "../../types";
+
+
+interface MovieCarouselProps {
+  title: string;
+  endpoint: string;
+}
+
+const MovieCarousel: FC<MovieCarouselProps> = ({ title, endpoint }) => {
+  const [movies, setMovies] = useState<ContentItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
   useEffect(() => {
@@ -44,14 +52,14 @@ const MovieCarousel = ({ title, endpoint }) => {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="w-60 h-80 bg-gray-800 rounded-lg animate-pulse shrink-0"
+              className="w-52 sm:w-60 h-72 sm:h-80 bg-gray-800 rounded-lg animate-pulse shrink-0"
             ></div>
           ))}
         </div>
       ) : (
         <motion.div
           className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 -mb-4"
-          style={{ scrollbarWidth: "none", "-ms-overflow-style": "none" }}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

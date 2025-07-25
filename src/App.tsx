@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState, FC } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Navbar from './components/UI/Navbar'
+import Navbar from "./components/UI/Navbar";
 import SearchOverlay from "./components/UI/SearchOverlay";
 import HomePage from "./components/pages/HomePage";
 import ContentGridPage from "./components/pages/ContentGridPage";
 import DetailPage from "./components/pages/DetailPage";
 
-const App = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+const App: FC = () => {
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
 
   return (
     <div className="bg-[#0c0c0c]">
@@ -21,7 +21,6 @@ const App = () => {
         onClose={() => setIsSearchOpen(false)}
       />
 
-      {/* Toast Container */}
       <ToastContainer />
 
       <Routes>

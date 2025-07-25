@@ -1,11 +1,18 @@
-import { useRef } from "react";
+import React, { useRef, FC } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const MovieCard = ({ movie }) => {
-  const cardRef = useRef(null);
+import type { ContentItem } from "../../types";
 
-  const handleMouseMove = (e) => {
+interface MovieCardProps {
+  movie: ContentItem;
+}
+
+const MovieCard: FC<MovieCardProps> = ({ movie }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
     const { clientX, clientY, currentTarget } = e;
     const { left, top, width, height } = currentTarget.getBoundingClientRect();
     const x = (clientX - left - width / 2) / 25;
@@ -14,7 +21,9 @@ const MovieCard = ({ movie }) => {
   };
 
   const handleMouseLeave = () => {
-    cardRef.current.style.transform = "rotateY(0deg) rotateX(0deg)";
+    if (cardRef.current) {
+      cardRef.current.style.transform = "rotateY(0deg) rotateX(0deg)";
+    }
   };
 
   const cardVariants = {

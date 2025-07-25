@@ -1,8 +1,12 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { NavLink } from "react-router-dom";
 
-const Navbar = ({ onSearchClick }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
+interface NavbarProps {
+  onSearchClick: () => void;
+}
+
+const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,8 +16,7 @@ const Navbar = ({ onSearchClick }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Style for active NavLink
-  const activeLinkStyle = {
+  const activeLinkStyle: React.CSSProperties = {
     color: "#ffc107",
   };
 

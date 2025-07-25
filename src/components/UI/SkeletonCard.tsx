@@ -1,4 +1,6 @@
-const SkeletonCard = () => {
+import React, { FC } from 'react';
+
+const SkeletonCard: FC = () => {
   return (
     <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
       <div className="animate-pulse">

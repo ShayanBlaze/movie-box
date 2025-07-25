@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
 import MovieCard from "../UI/MovieCard";
 import { motion } from "framer-motion";
 
-const ContentGridPage = ({ title, endpoint }) => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+import type { ContentItem } from "../../types";
+
+interface ContentGridPageProps {
+  title: string;
+  endpoint: string;
+}
+
+const ContentGridPage: FC<ContentGridPageProps> = ({ title, endpoint }) => {
+  const [items, setItems] = useState<ContentItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
   useEffect(() => {
@@ -17,7 +24,7 @@ const ContentGridPage = ({ title, endpoint }) => {
         const data = await response.json();
         setItems(data.results);
       } catch (error) {
-        console.error("Error fetching movies:", error);
+        console.error("Error fetching content:", error);
       } finally {
         setLoading(false);
       }

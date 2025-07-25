@@ -1,7 +1,8 @@
+import React, { FC } from "react";
 import Hero from "../UI/Hero";
 import MovieCarousel from "../UI/MovieCarousel";
 
-const HomePage = () => {
+const HomePage: FC = () => {
   return (
     <div className="bg-[#0c0c0c] text-white overflow-x-hidden">
       {/* The Hero section will feature one of the popular movies */}

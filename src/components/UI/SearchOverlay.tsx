@@ -1,12 +1,19 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Link } from "react-router-dom";
 
-const SearchOverlay = ({ isOpen, onClose }) => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+import type { ContentItem } from "../../types";
+
+interface SearchOverlayProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const SearchOverlay: FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
+  const [query, setQuery] = useState<string>("");
+  const [results, setResults] = useState<ContentItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const debouncedQuery = useDebounce(query, 500);
   const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -15,15 +22,14 @@ const SearchOverlay = ({ isOpen, onClose }) => {
       setLoading(true);
       const searchMulti = async () => {
         try {
-          // Multiple search request
           const response = await fetch(
             `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${debouncedQuery}`
           );
           const data = await response.json();
-          // Filter out results that are not movies or TV shows (e.g., actors)
           setResults(
             data.results.filter(
-              (item) => item.media_type === "movie" || item.media_type === "tv"
+              (item: ContentItem) =>
+                item.media_type === "movie" || item.media_type === "tv"
             )
           );
         } catch (error) {
@@ -45,6 +51,12 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -53,7 +65,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex flex-col items-center p-4"
-          onClick={onClose}
+          onClick={handleOverlayClick}
         >
           <motion.div
             initial={{ y: -100, opacity: 0 }}
@@ -68,7 +80,9 @@ const SearchOverlay = ({ isOpen, onClose }) => {
               <input
                 type="text"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setQuery(e.target.value)
+                }
                 placeholder="Search for a movie or TV show..."
                 autoFocus
                 className="w-full bg-gray-700/50 text-white text-2xl placeholder-gray-400 rounded-full py-4 px-6 pr-16 focus:outline-none focus:ring-2 focus:ring-yellow-400"
@@ -108,7 +122,6 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                 const displayDate = item.release_date || item.first_air_date;
 
                 return (
-                  // Each result is a link that closes the search overlay on click
                   <Link key={item.id} to={linkPath} onClick={onClose}>
                     <div className="bg-gray-800/70 rounded-lg p-3 flex items-center gap-4 hover:bg-gray-700 transition-colors">
                       <img

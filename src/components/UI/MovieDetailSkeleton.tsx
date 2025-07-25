@@ -1,4 +1,6 @@
-const MovieDetailSkeleton = () => {
+import React, { FC } from "react";
+
+const MovieDetailSkeleton: FC = () => {
   return (
     <div className="animate-pulse">
       {/* Backdrop Skeleton */}

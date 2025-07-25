@@ -180,6 +180,12 @@ const DetailPage: FC = () => {
                   </div>
                   <div>
                     <p className="text-gray-400 text-sm font-medium">
+                      EPISODES
+                    </p>
+                    <p className="text-xl sm:text-2xl font-bold">{episodes}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm font-medium">
                       FIRST AIR DATE
                     </p>
                     <p className="text-xl sm:text-2xl font-bold">

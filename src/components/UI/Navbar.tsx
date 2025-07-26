@@ -1,5 +1,7 @@
 import React, { useState, useEffect, FC } from "react";
 import { NavLink } from "react-router-dom";
+import { FiLogIn, FiLogOut } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 interface NavbarProps {
   onSearchClick: () => void;
@@ -7,11 +9,22 @@ interface NavbarProps {
 
 const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  const handleAuthClick = () => {
+    if (isLoggedIn) {
+      if (window.confirm("Are you sure you want to log out?")) {
+        setIsLoggedIn(false);
+        toast.success("Logged out successfully");
+      }
+    } else {
+      setIsLoggedIn(true);
+      toast.success("Logged in successfully");
+    }
+  };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -29,14 +42,12 @@ const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <NavLink
-                to="/"
-                className="text-3xl font-black text-yellow-400 tracking-wider"
-              >
-                MovieBox
-              </NavLink>
-            </div>
+            <NavLink
+              to="/"
+              className="text-3xl font-black text-yellow-400 tracking-wider"
+            >
+              MovieBox
+            </NavLink>
             <div className="hidden md:block ml-10">
               <div className="flex items-baseline space-x-4">
                 <NavLink
@@ -69,10 +80,10 @@ const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
               </div>
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
             <button
               onClick={onSearchClick}
-              className="text-gray-300 hover:text-yellow-400 p-2 rounded-full cursor-pointer"
+              className="text-gray-300 hover:text-yellow-400 p-2 rounded-full transition cursor-pointer"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -88,6 +99,12 @@ const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 />
               </svg>
+            </button>
+            <button
+              onClick={() => handleAuthClick()}
+              className="text-gray-300 hover:text-yellow-400 p-2 rounded-full transition cursor-pointer"
+            >
+              {isLoggedIn ? <FiLogOut size={24} /> : <FiLogIn size={24} />}
             </button>
           </div>
         </div>

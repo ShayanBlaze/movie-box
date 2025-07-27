@@ -154,4 +154,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 ## 🙏 Acknowledgments
 
-This project uses data and images provided by [The Movie Database (TMDB) API](https://www.themoviedb.org/).
+This project uses data and images provide by [The Movie Database (TMDB) API](https://www.themoviedb.org/).

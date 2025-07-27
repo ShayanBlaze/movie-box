@@ -1,27 +1,23 @@
-import React, { useState, useEffect, FC } from "react";
-import { NavLink } from "react-router-dom";
-import { FiLogIn, FiLogOut } from "react-icons/fi";
-import { toast } from "react-toastify";
+import { useState, useEffect, FC } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { FiLogIn } from "react-icons/fi";
+import { useAuth } from "../../context/AuthContext";
 
 interface NavbarProps {
   onSearchClick: () => void;
 }
 
+const navLinks = [
+  { path: "/", label: "Home" },
+  { path: "/movies", label: "Movies" },
+  { path: "/tv-shows", label: "TV Shows" },
+];
+
 const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const handleAuthClick = () => {
-    if (isLoggedIn) {
-      if (window.confirm("Are you sure you want to log out?")) {
-        setIsLoggedIn(false);
-        toast.success("Logged out successfully");
-      }
-    } else {
-      setIsLoggedIn(true);
-      toast.success("Logged in successfully");
-    }
-  };
+  const { user, loginWithGoogle, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -29,9 +25,17 @@ const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const activeLinkStyle: React.CSSProperties = {
-    color: "#ffc107",
-  };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isMenuOpen && !(event.target as Element).closest(".relative")) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   return (
     <nav
@@ -50,33 +54,19 @@ const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
             </NavLink>
             <div className="hidden md:block ml-10">
               <div className="flex items-baseline space-x-4">
-                <NavLink
-                  to="/"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  style={({ isActive }) =>
-                    isActive ? activeLinkStyle : undefined
-                  }
-                >
-                  Home
-                </NavLink>
-                <NavLink
-                  to="/movies"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  style={({ isActive }) =>
-                    isActive ? activeLinkStyle : undefined
-                  }
-                >
-                  Movies
-                </NavLink>
-                <NavLink
-                  to="/tv-shows"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  style={({ isActive }) =>
-                    isActive ? activeLinkStyle : undefined
-                  }
-                >
-                  TV Shows
-                </NavLink>
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    className={({ isActive }) =>
+                      `px-3 py-2 rounded-md text-sm font-medium transition-colors hover:text-white ${
+                        isActive ? "text-yellow-400" : "text-gray-300"
+                      }`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                ))}
               </div>
             </div>
           </div>
@@ -86,7 +76,6 @@ const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
               className="text-gray-300 hover:text-yellow-400 p-2 rounded-full transition cursor-pointer"
             >
               <svg
-                xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -100,12 +89,52 @@ const Navbar: FC<NavbarProps> = ({ onSearchClick }) => {
                 />
               </svg>
             </button>
-            <button
-              onClick={() => handleAuthClick()}
-              className="text-gray-300 hover:text-yellow-400 p-2 rounded-full transition cursor-pointer"
-            >
-              {isLoggedIn ? <FiLogOut size={24} /> : <FiLogIn size={24} />}
-            </button>
+            <div className="relative">
+              {user ? (
+                <div>
+                  <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="block w-10 h-10 rounded-full overflow-hidden border-2 border-gray-600 focus:outline-none focus:border-yellow-400"
+                  >
+                    <img
+                      src={
+                        user.photoURL ||
+                        `https://ui-avatars.com/api/?name=${user.displayName}`
+                      }
+                      alt="User Avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                  {isMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 z-50">
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
+                      >
+                        Profile
+                      </Link>
+                      <div className="border-t border-gray-700 my-1"></div>
+                      <button
+                        onClick={() => {
+                          logout();
+                          setIsMenuOpen(false);
+                        }}
+                        className="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-gray-700"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={loginWithGoogle}
+                  className="text-gray-300 hover:text-yellow-400 p-2 rounded-full transition cursor-pointer"
+                >
+                  <FiLogIn size={24} />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

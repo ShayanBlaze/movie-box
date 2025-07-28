@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="800" version="1.1" viewBox="0 0 800.00001 800.00001" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(0 -252.36)">
+  <rect x="38.719" y="488.42" width="742.96" height="563.94" color="#000000" color-rendering="auto" fill="#161616" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <rect x="22.163" y="436.68" width="765" height="72.433" ry="5.0703" color="#000000" color-rendering="auto" fill="#161616" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <path d="m287.15 436.68-51.736 72.433h87.398l50.587-72.433h-86.249z" color="#000000" color-rendering="auto" fill="#fff" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <path d="m665.87 436.68-51.739 72.433h87.398l50.587-72.433h-86.246z" fill="#fff" fill-rule="evenodd"/>
+  <path d="m537.56 436.68-51.736 72.433h87.398l50.587-72.433h-86.249z" fill="#fff" fill-rule="evenodd"/>
+  <path d="m411.32 436.68-51.736 72.433h87.398l50.584-72.433h-86.246z" fill="#fff" fill-rule="evenodd"/>
+  <rect transform="matrix(.98896 -.14821 -.14821 -.98896 0 0)" x="-42.802" y="-435.14" width="765" height="72.433" ry="5.0703" color="#000000" color-rendering="auto" fill="#161616" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <path d="m284.22 397.41-61.9-63.965 86.433-12.953 60.764 64.136-85.297 12.783z" color="#000000" color-rendering="auto" fill="#fff" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <path d="m658.76 341.28-61.903-63.965 86.433-12.953 60.764 64.136-85.294 12.782z" fill="#fff" fill-rule="evenodd"/>
+  <path d="m531.87 360.29-61.9-63.965 86.433-12.953 60.764 64.136-85.297 12.783z" fill="#fff" fill-rule="evenodd"/>
+  <path d="m407.02 379-61.9-63.965 86.433-12.953 60.761 64.136-85.294 12.782z" fill="#fff" fill-rule="evenodd"/>
+  <path d="m22.163 373.02 78.743 0.73169 78.763 69.688c32.263 25.423 20.949 65.969-9.7255 66.223l-147.78-0.55318z" color="#000000" color-rendering="auto" fill="#232323" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <circle cx="53.186" cy="485.82" r="7.3168" color="#000000" color-rendering="auto" fill="#fff" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <circle cx="53.186" cy="400.21" r="7.3168" color="#000000" color-rendering="auto" fill="#fff" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <circle cx="160.74" cy="485.82" r="7.3168" color="#000000" color-rendering="auto" fill="#fff" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <path transform="translate(0 252.36)" d="m59.771 338.09v16.098h229.02v125.85h-229.02v16.096h447.06v62.926h-447.06v16.098h447.06v62.924h-447.06v16.098h699.49v-16.098h-236.33v-62.924h236.33v-16.098h-236.33v-62.926h236.33v-16.096h-204.14v-125.85h204.14v-16.098h-699.49zm245.12 16.098h234.14v125.85h-234.14v-125.85z" color="#000000" color-rendering="auto" fill="#fff" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+  <rect x="59.771" y="968" width="699.49" height="16.097" color="#000000" color-rendering="auto" fill="#fff" image-rendering="auto" shape-rendering="auto" solid-color="#000000" style="isolation:auto;mix-blend-mode:normal"/>
+ </g>
+</svg>

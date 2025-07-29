@@ -53,7 +53,7 @@ const MovieCarousel: FC<MovieCarouselProps> = ({ title, endpoint }) => {
         </div>
       ) : (
         <motion.div
-          className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 -mb-4 pl-4 sm:pl-0"
+          className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 -mb-4 pl-4 sm:pl-0 overflow-y-hidden"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {movies.map((movie) => (

@@ -52,7 +52,7 @@ export const LoginPage: FC = () => {
           Welcome Back!
         </motion.h2>
 
-        {/* فیلد ایمیل */}
+        {/* Email Field */}
         <motion.div variants={itemVariants} className="relative mb-6">
           <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -72,7 +72,7 @@ export const LoginPage: FC = () => {
           </label>
         </motion.div>
 
-        {/* فیلد رمز عبور */}
+        {/* Password Field */}
         <motion.div variants={itemVariants} className="relative mb-8">
           <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
           <input

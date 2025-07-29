@@ -60,7 +60,7 @@ export const RegisterPage: FC = () => {
           Create Your Account
         </motion.h2>
 
-        {/* فیلد نام کاربری */}
+        {/* Username Field */}
         <motion.div variants={itemVariants} className="relative mb-6">
           <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -80,7 +80,7 @@ export const RegisterPage: FC = () => {
           </label>
         </motion.div>
 
-        {/* فیلد ایمیل */}
+        {/* Email Field */}
         <motion.div variants={itemVariants} className="relative mb-6">
           <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -100,7 +100,7 @@ export const RegisterPage: FC = () => {
           </label>
         </motion.div>
 
-        {/* فیلد رمز عبور */}
+        {/* Password Field */}
         <motion.div variants={itemVariants} className="relative mb-6">
           <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -127,7 +127,7 @@ export const RegisterPage: FC = () => {
           </button>
         </motion.div>
 
-        {/* فیلد تایید رمز عبور */}
+        {/* Confirm Password Field */}
         <motion.div variants={itemVariants} className="relative mb-8">
           <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -135,7 +135,6 @@ export const RegisterPage: FC = () => {
             id="confirmPassword"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            // در صورت عدم تطابق، می‌توانیم رنگ border را قرمز کنیم
             className={`w-full p-3 pl-12 bg-gray-700/50 rounded-lg text-white placeholder-transparent focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all peer ${
               confirmPassword && password !== confirmPassword
                 ? "ring-2 ring-red-500"

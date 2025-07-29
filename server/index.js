@@ -11,7 +11,7 @@ const app = express();
 
 // domain whitelist
 const allowedOrigins = [
-  "https://movie-pv0o9qjc8-shayans-projects-2cbd416c.vercel.app/",
+  "https://movie-box-git-main-shayans-projects-2cbd416c.vercel.app",
   "http://localhost:5173",
   "http://localhost:3000",
 ];

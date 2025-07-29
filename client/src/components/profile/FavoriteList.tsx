@@ -1,7 +1,11 @@
+// src/components/FavoritesList.tsx
+
 import { FC } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { FaTrash } from "react-icons/fa";
+import { FaArrowRight, FaTrash } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { FavoriteSkeletonCard } from "../UI/FavoriteSkeletonCard";
+import { Link } from "react-router-dom";
 
 export const FavoritesList: FC = () => {
   const { favorites, removeFavorite, favoritesLoading } = useAuth();
@@ -27,7 +31,18 @@ export const FavoritesList: FC = () => {
   };
 
   if (favoritesLoading) {
-    return <div>Loading your favorites...</div>;
+    return (
+      <div>
+        <h1 className="text-4xl font-bold tracking-tighter mb-8">
+          My Favorites
+        </h1>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <FavoriteSkeletonCard key={index} />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (favorites.length === 0) {
@@ -37,12 +52,13 @@ export const FavoritesList: FC = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center py-16"
       >
-        <p className="text-xl text-gray-400">
-          You have no favorite items yet.
-        </p>
-        <p className="text-gray-500 mt-2">
-          Find and add some movies you love!
-        </p>
+        <p className="text-xl text-gray-400">You have no favorite items yet.</p>
+        <p className="text-gray-500 mt-2">Find and add some movies you love!</p>
+        <Link to="/movies" className="font-bold text-amber-300">
+          <div className="flex items-center justify-center gap-3 mt-2">
+            TO THE MOVIES <FaArrowRight />
+          </div>
+        </Link>
       </motion.div>
     );
   }
@@ -50,7 +66,6 @@ export const FavoritesList: FC = () => {
   return (
     <div>
       <h1 className="text-4xl font-bold tracking-tighter mb-8">My Favorites</h1>
-      {/* To enable 3D effect, we give perspective to the parent */}
       <motion.div
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6"
         variants={listVariants}
@@ -82,7 +97,6 @@ export const FavoritesList: FC = () => {
                   {movie.title}
                 </h4>
               </div>
-              {/* Overlay layer that appears on hover */}
               <motion.div
                 className="absolute inset-0 bg-black/70 flex items-center justify-center"
                 initial={{ opacity: 0 }}

@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { motion, useSpring, useTransform, useInView } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const AnimatedNumber: FC<{ value: number }> = ({ value }) => {
   const ref = React.useRef(null);
@@ -81,6 +82,19 @@ export const Dashboard: FC = () => {
         <p className="text-white/70 mt-2">
           Based on your {favorites.length} favorited items.
         </p>
+        {favorites.length === 0 && (
+          <div className="flex justify-center items-center">
+            <p className="text-white/70 mt-2">
+              How about to make some movies
+              <Link to="/profile/favorites">
+                <span className="capitalize font-bold text-white">
+                  {" "}
+                  favorite ?
+                </span>
+              </Link>
+            </p>
+          </div>
+        )}
         <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full opacity-60"></div>
         <div className="absolute -top-12 -left-16 w-48 h-48 bg-white/10 rounded-full opacity-50"></div>
       </motion.div>

@@ -19,7 +19,11 @@ const allowedOrigins = [
 // cors options
 const corsOptions = {
   origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+    if (
+      allowedOrigins.includes(origin) ||
+      (origin && origin.endsWith("-shayans-projects-2cbd416c.vercel.app")) ||
+      !origin
+    ) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));

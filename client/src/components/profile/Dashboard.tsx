@@ -43,7 +43,7 @@ export const Dashboard: FC = () => {
         staggerChildren: 0.2,
       },
     },
-  };
+  } as const;
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -52,7 +52,7 @@ export const Dashboard: FC = () => {
       opacity: 1,
       transition: { type: "spring", stiffness: 100 },
     },
-  };
+  } as const;
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible">

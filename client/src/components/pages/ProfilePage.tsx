@@ -19,7 +19,7 @@ export const ProfilePage: FC = () => {
         staggerChildren: 0.15,
       },
     },
-  };
+  } as const;
 
   const sidebarVariants = {
     hidden: { x: -50, opacity: 0 },
@@ -28,7 +28,7 @@ export const ProfilePage: FC = () => {
       opacity: 1,
       transition: { type: "spring", stiffness: 100, damping: 15 },
     },
-  };
+  } as const;
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -37,7 +37,7 @@ export const ProfilePage: FC = () => {
       y: 0,
       transition: { type: "spring", stiffness: 100, damping: 15 },
     },
-  };
+  } as const;
 
   return (
     <div className="bg-gray-900 text-white min-h-screen p-4 sm:p-8 md:p-12 lg:p-20 pt-24">

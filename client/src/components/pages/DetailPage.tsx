@@ -88,23 +88,23 @@ const DetailPage: FC = () => {
       transition={{ duration: 0.5 }}
     >
       {/* Backdrop Section */}
-      <div className="relative w-full h-[50vh] sm:h-[65vh]">
+      <div className="relative w-full h-[50vh] sm:h-[60vh]">
         <div className="absolute inset-0">
           <img
             src={backdropUrl}
             alt=""
             className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/70 to-transparent"></div>
         </div>
       </div>
 
-      {/* Content Section */}
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-8 pb-24 -mt-24 sm:-mt-48 lg:-mt-56">
-        <div className="md:flex md:items-start md:space-x-10">
+      {/* Content Section - Adjusted negative margin */}
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-8 pb-16 -mt-28 sm:-mt-32 md:-mt-48">
+        <div className="md:flex md:items-start md:space-x-8">
           {/* Poster */}
           <motion.div
-            className="w-48 sm:w-64 mx-auto md:mx-0 shrink-0"
+            className="w-40 sm:w-56 mx-auto md:mx-6 shrink-0"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
@@ -117,34 +117,36 @@ const DetailPage: FC = () => {
           </motion.div>
 
           {/* Details */}
-          <div className="mt-6 md:mt-12 text-white mx-4">
-            <h1 className="text-3xl lg:text-5xl font-black tracking-tight">
+          <div className="mt-6 md:mt-0 text-white w-full">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-center md:text-left">
               {displayName}
             </h1>
             {tagline && (
-              <p className="text-lg text-gray-400 mt-2 italic">"{tagline}"</p>
+              <p className="text-base sm:text-lg text-gray-400 mt-2 italic text-center md:text-left">
+                "{tagline}"
+              </p>
             )}
 
-            <div className="flex flex-wrap gap-2 mt-5">
+            <div className="flex flex-wrap gap-2 mt-5 justify-center md:justify-start">
               {item.genres.map((genre) => (
                 <span
                   key={genre.id}
-                  className="bg-gray-800 text-gray-300 px-3 py-1 text-sm rounded-full"
+                  className="bg-gray-800 text-gray-300 px-3 py-1 text-xs sm:text-sm rounded-full"
                 >
                   {genre.name}
                 </span>
               ))}
             </div>
 
-            <p className="mt-6 text-gray-300 leading-relaxed max-w-3xl">
+            <p className="mt-6 text-gray-300 leading-relaxed max-w-3xl text-sm sm:text-base">
               {item.overview}
             </p>
 
-            <div className="flex justify-end">
+            <div className="flex justify-center md:justify-start mt-4">
               <motion.button
                 onClick={toggleFavorite}
                 whileTap={{ scale: 0.95 }}
-                className={`flex items-center gap-2 px-6 py-3 mt-6 rounded-lg font-bold transition-colors cursor-pointer ${
+                className={`flex items-center gap-2 px-4 py-2 mt-6 rounded-lg font-bold transition-colors cursor-pointer text-sm sm:text-base ${
                   isFavorited
                     ? "bg-red-600 hover:bg-red-700 text-white"
                     : "bg-gray-700 hover:bg-gray-600 text-gray-200"
@@ -157,15 +159,14 @@ const DetailPage: FC = () => {
               </motion.button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 mt-8 text-left sm:text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 mt-8 text-center">
               {/* RATING */}
               <div>
                 <p className="text-gray-400 text-sm font-medium">RATING</p>
-                <p className="text-xl sm:text-2xl font-bold text-yellow-400 flex items-center gap-2 justify-start sm:justify-center">
+                <p className="text-xl sm:text-2xl font-bold text-yellow-400 flex items-center gap-2 justify-center">
                   ⭐ {rating}
-                  <span className="text-gray-500 text-sm">/ 10</span>
                 </p>
-                <span className="text-gray-500 text-sm">
+                <span className="text-gray-500 text-xs sm:text-sm">
                   {formatVotes(item.vote_count)} votes
                 </span>
               </div>
@@ -183,11 +184,11 @@ const DetailPage: FC = () => {
                     <p className="text-gray-400 text-sm font-medium">
                       RELEASE DATE
                     </p>
-                    <p className="text-xl sm:text-2xl font-bold">
+                    <p className="text-base sm:text-xl font-bold">
                       {releaseDate &&
                         new Date(releaseDate).toLocaleDateString("en-US", {
                           year: "numeric",
-                          month: "long",
+                          month: "short",
                           day: "numeric",
                         })}
                     </p>
@@ -206,19 +207,6 @@ const DetailPage: FC = () => {
                     <p className="text-xl sm:text-2xl font-bold">{episodes}</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-sm font-medium">
-                      FIRST AIR DATE
-                    </p>
-                    <p className="text-xl sm:text-2xl font-bold">
-                      {releaseDate &&
-                        new Date(releaseDate).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                    </p>
-                  </div>
-                  <div>
                     <p className="text-gray-400 text-sm font-medium">Status</p>
                     <p className="text-xl sm:text-2xl font-bold">{status}</p>
                   </div>
@@ -230,11 +218,11 @@ const DetailPage: FC = () => {
 
         {/* Cast Section */}
         {cast.length > 0 && (
-          <div className="mt-16 sm:mt-20">
-            <h2 className="text-3xl font-bold text-white mb-6 border-l-4 border-yellow-400 pl-4">
+          <div className="mt-12 sm:mt-16">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 border-l-4 border-yellow-400 pl-4">
               Top Billed Cast
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 sm:gap-6">
               {cast.map((actor) => (
                 <div key={actor.cast_id} className="text-center">
                   <img
@@ -244,13 +232,15 @@ const DetailPage: FC = () => {
                         : "https://placehold.co/185x278/1f2937/e5e7eb?text=No+Image"
                     }
                     alt={actor.name}
-                    className="rounded-lg shadow-lg mx-auto transition-transform duration-300 hover:scale-105"
+                    className="rounded-lg shadow-md mx-auto transition-transform duration-300 hover:scale-105 w-full"
                     loading="lazy"
                   />
-                  <p className="text-white font-semibold mt-3 text-sm">
+                  <p className="text-white font-semibold mt-2 text-xs sm:text-sm">
                     {actor.name}
                   </p>
-                  <p className="text-gray-400 text-xs">{actor.character}</p>
+                  <p className="text-gray-400 text-[10px] sm:text-xs">
+                    {actor.character}
+                  </p>
                 </div>
               ))}
             </div>

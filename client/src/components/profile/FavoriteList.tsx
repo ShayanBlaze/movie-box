@@ -1,11 +1,112 @@
-// src/components/FavoritesList.tsx
-
-import { FC } from "react";
+import { FC, useState, useEffect, MouseEvent } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { FaArrowRight, FaTrash } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { FavoriteSkeletonCard } from "../UI/FavoriteSkeletonCard";
 import { Link } from "react-router-dom";
+
+interface FavoriteItemProps {
+  movie: {
+    id: number;
+    poster_path?: string;
+    title?: string;
+    name?: string;
+  };
+  onRemove: (id: number) => void;
+  variants: any;
+}
+
+const FavoriteItem: FC<FavoriteItemProps> = ({ movie, onRemove, variants }) => {
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTapped, setIsTapped] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const onTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    setIsTouchDevice(onTouch);
+  }, []);
+
+  const handleCardClick = () => {
+    if (isTouchDevice) {
+      setIsTapped(!isTapped);
+    }
+  };
+
+  const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onRemove(movie.id);
+  };
+
+  const showOverlay =
+    (!isTouchDevice && isHovered) || (isTouchDevice && isTapped);
+
+  const overlayVariants = {
+    hidden: { opacity: 0, transition: { duration: 0.2 } },
+    visible: { opacity: 1, transition: { duration: 0.3 } },
+  };
+
+  const buttonVariants = {
+    hidden: { scale: 0.8, y: 10 },
+    visible: {
+      scale: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 300, damping: 15 },
+    },
+  } as const;
+
+  return (
+    <motion.div
+      layout
+      variants={variants}
+      exit="exit"
+      className="group relative rounded-xl overflow-hidden shadow-lg cursor-pointer aspect-[2/3]"
+      onClick={handleCardClick}
+      onHoverStart={() => !isTouchDevice && setIsHovered(true)}
+      onHoverEnd={() => !isTouchDevice && setIsHovered(false)}
+    >
+      <img
+        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        alt={movie.title || movie.name}
+        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-3 flex flex-col justify-end">
+        <h4 className="font-bold text-white truncate text-base sm:text-lg">
+          {movie.title || movie.name}
+        </h4>
+      </div>
+
+      {/* Overlay with delete button */}
+      <AnimatePresence>
+        {showOverlay && (
+          <motion.div
+            variants={overlayVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }}
+            onClick={(e) => {
+              if (isTouchDevice) {
+                e.stopPropagation();
+                setIsTapped(false);
+              }
+            }}
+          >
+            <motion.button
+              variants={buttonVariants}
+              onClick={handleDelete}
+              onPointerDown={(e) => e.stopPropagation()}
+              className="p-4 bg-red-600 rounded-full text-white shadow-2xl flex items-center justify-center"
+              aria-label={`Remove ${movie.title || movie.name}`}
+            >
+              <FaTrash size={20} />
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
 
 export const FavoritesList: FC = () => {
   const { favorites, removeFavorite, favoritesLoading } = useAuth();
@@ -33,11 +134,11 @@ export const FavoritesList: FC = () => {
   if (favoritesLoading) {
     return (
       <div>
-        <h1 className="text-4xl font-bold tracking-tighter mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tighter mb-8">
           My Favorites
         </h1>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {Array.from({ length: 8 }).map((_, index) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+          {Array.from({ length: 10 }).map((_, index) => (
             <FavoriteSkeletonCard key={index} />
           ))}
         </div>
@@ -65,55 +166,23 @@ export const FavoritesList: FC = () => {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold tracking-tighter mb-8">My Favorites</h1>
+      <h1 className="text-3xl sm:text-4xl font-bold tracking-tighter mb-8">
+        My Favorites
+      </h1>
       <motion.div
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-5"
         variants={listVariants}
         initial="hidden"
         animate="visible"
       >
         <AnimatePresence>
           {favorites.map((movie) => (
-            <motion.div
+            <FavoriteItem
               key={movie.id}
-              layout
+              movie={movie}
+              onRemove={removeFavorite}
               variants={itemVariants}
-              exit="exit"
-              className="group relative rounded-xl overflow-hidden shadow-lg cursor-pointer"
-              style={{ transformStyle: "preserve-3d" }}
-              whileHover={{
-                y: -10,
-                scale: 1.05,
-                boxShadow: "0px 20px 30px rgba(0,0,0,0.5)",
-              }}
-            >
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent p-3 flex flex-col justify-end">
-                <h4 className="font-bold text-white truncate text-lg">
-                  {movie.title}
-                </h4>
-              </div>
-              <motion.div
-                className="absolute inset-0 bg-black/70 flex items-center justify-center"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.button
-                  onClick={() => removeFavorite(movie.id)}
-                  className="p-4 bg-red-600 rounded-full text-white shadow-lg"
-                  aria-label={`Remove ${movie.title}`}
-                  whileHover={{ scale: 1.2, rotate: 15 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <FaTrash />
-                </motion.button>
-              </motion.div>
-            </motion.div>
+            />
           ))}
         </AnimatePresence>
       </motion.div>

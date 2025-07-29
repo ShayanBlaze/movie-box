@@ -9,8 +9,26 @@ const favoritesRouter = require("./routes/favorite.routes");
 
 const app = express();
 
+// domain whitelist
+const allowedOrigins = [
+  "https://movie-ahusb4btw-shayans-projects-2cbd416c.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+
+// cors options
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
 // Middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/api", (req, res) => {
@@ -22,7 +40,7 @@ app.use("/api/v1/favorites", favoritesRouter);
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000; 
+const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
   try {

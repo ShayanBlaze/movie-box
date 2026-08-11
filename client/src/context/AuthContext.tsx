@@ -71,21 +71,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [token]);
 
-  useEffect(() => {
-    const verifyUser = async () => {
-      if (token) {
-        try {
-          const { data } = await api.get("/auth/me");
-          setUser(data);
-        } catch (error) {
-          console.error("Failed to verify user:", error);
-          logout();
-        }
-      }
+useEffect(() => {
+  const verifyUser = async () => {
+    if (!token) {
       setLoading(false);
-    };
-    verifyUser();
-  }, []);
+      return;
+    }
+    try {
+      const { data } = await api.get("/auth/me");
+      setUser(data);
+    } catch (error) {
+      logout();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  verifyUser();
+}, [token]);
 
   const login = async (email: string, password: string) => {
     try {

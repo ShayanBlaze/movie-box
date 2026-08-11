@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
+const asyncHandler = require("express-async-handler");
 
 const defaultProfilePictures = [
   "https://i.ibb.co/9kDvYVLQ/user-icon-three-removebg-preview.png",
@@ -18,7 +19,7 @@ const generateToken = (id) => {
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
-const registerUser = async (req, res) => {
+const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
   console.log("--- Register Attempt ---");
   console.log("Received data:", { username, email, password: "***" });
@@ -35,39 +36,33 @@ const registerUser = async (req, res) => {
   const profilePicture = defaultProfilePictures[randomIndex];
   console.log("Assigning profile picture:", profilePicture);
 
-  try {
-    console.log("Attempting to create user in database...");
-    const user = await User.create({
-      username,
-      email,
-      password,
-      profilePicture,
-    });
+  console.log("Attempting to create user in database...");
+  const user = await User.create({
+    username,
+    email,
+    password,
+    profilePicture,
+  });
 
-    if (user) {
-      console.log("✅ User created successfully with ID:", user._id);
-      res.status(201).json({
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        profilePicture: user.profilePicture,
-        token: generateToken(user._id),
-      });
-    } else {
-      console.log("❌ User creation returned null/undefined.");
-      res.status(400);
-      throw new Error("Invalid user data");
-    }
-  } catch (error) {
-    console.error("❌ DATABASE ERROR during user creation:", error);
-    res.status(500);
-    throw new Error("Something went wrong during user creation.");
+  if (user) {
+    console.log("✅ User created successfully with ID:", user._id);
+    res.status(201).json({
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      profilePicture: user.profilePicture,
+      token: generateToken(user._id),
+    });
+  } else {
+    console.log("❌ User creation returned null/undefined.");
+    res.status(400);
+    throw new Error("Invalid user data");
   }
-};
+});
 
 // @desc    Login user
 // @route   POST /api/auth/login
-const loginUser = async (req, res) => {
+const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   console.log("--- Login Attempt ---");
@@ -99,13 +94,13 @@ const loginUser = async (req, res) => {
     res.status(401);
     throw new Error("Invalid email or password");
   }
-};
+});
 
 // @desc    Get user data
 // @route   GET /api/auth/me
 // @access  Private
-const getMe = async (req, res) => {
+const getMe = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
-};
+});
 
 module.exports = { registerUser, loginUser, getMe };
